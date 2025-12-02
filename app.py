@@ -21,6 +21,7 @@ class Items(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False, default=0)
     name = db.Column(db.String(64), nullable=False)
+    category = db.Column(db.String(24), nullable=False)
     first_pic = db.Column(db.String(128), nullable=False)
     sec_pic = db.Column(db.String(128), nullable=False)
     third_pic = db.Column(db.String(128), nullable=False)
