@@ -1,4 +1,5 @@
 from flask import Flask, redirect, render_template, request, url_for
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
@@ -14,6 +15,8 @@ secret = os.getenv("secret_key")
 app.config['SECRET_KEY'] = secret
 
 db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
 
 # Database
 
@@ -44,16 +47,33 @@ def all():
 
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    refunds = Refunds.query.all()
+    return render_template('admin.html', refunds=refunds)
 
-@app.route('/refund')
+@app.route('/refund', methods=['POST'])
 def refund():
-    order = request.form.get('orderNum')
-    phone = request.form.get('phoneNum')
-    new_request = Refunds(order=order, phone=phone)
-    db.session.add(new_request)
+    if request.method == 'POST':
+        order = request.form.get('orderNum')
+        phone = request.form.get('phoneNum')
+        new_request = Refunds(order=order, phone=phone)
+        db.session.add(new_request)
+        db.session.commit()
+        return redirect(url_for("all"))
+
+@app.route('/refund/delete/<int:refund_id>')
+def delete(refund_id):
+    ref = Refunds.query.filter_by(id=refund_id).first()
+    db.session.delete(ref)
     db.session.commit()
-    return redirect(url_for("all"))
+    return redirect(url_for('admin'))
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'GET':
+        return render_template('contact.html')
+    if request.method == 'POST':
+        pass
+
 
 # Run
 
