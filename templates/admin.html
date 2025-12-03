@@ -4,10 +4,215 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ecommerce - Admin Panel</title>
+    <link rel="icon" href="../static/4804045.png">
     <link rel="stylesheet" href="../static/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-    
+    <nav class="nvb">
+        <div class="left">
+            <h1 class="ecom">Ecommerce</h1>
+            <h1 class="hm ord">Orders</h1>
+            <h1 class="ref anim">Refunds</h1>
+            <h1 class="txt contact anim">Messages</h1>
+            <h1 class="txt pro anim">Products</h1>
+            <h1 class="txt email anim">Emails</h1>
+        </div>
+        
+        <div class="center"></div>
+
+        <div class="right">
+            <img src="../static/user.png" class="prof icon">
+            <img src="../static/cart.png" class="cart icon">
+        </div>
+
+    </nav>
+
+    <div class="adminCon">
+        <div class="adminPanel">
+            <div class="ordPan pan">
+                <h1 class="at">Orders</h1>
+                {% if orders %}
+                    {% for order in orders %}
+
+                    {% endfor %}
+                {% else %}
+                    <div class="center">
+                        <h1 class="no">No Orders Available</h1>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="refundPan pan">
+                <h1 class="at">Refunds</h1>
+                {% if refunds %}
+                    {% for refund in refunds %}
+                    <div class="ro">
+                        <div class="refBar">
+                            <h1 class="ron">Order Number: {{ refund.order }}</h1>
+                            <h1 class="rpn">Phone Number: {{ refund.phone }}</h1>
+                        </div>
+                        <img src="../static/trash.png" class="trash" alt="Trash Icon">
+                    </div>
+                    <script>
+                        const trash = document.querySelector('.trash');
+
+                        trash.addEventListener('click', ()=> {
+                            window.location.href = "{{ url_for('delete', refund_id=refund.id)}}"
+                        })
+                    </script>
+                    {% endfor %}
+                {% else %}
+                    <div class="center">
+                        <h1 class="no">No Refunds Available</h1>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="messagesPan pan">
+                <h1 class="at">Messages</h1>
+                {% if messages %}
+                    {% for message in messages %}
+
+                    {% endfor %}
+                {% else %}
+                    <div class="center">
+                        <h1 class="no">No Messages Available</h1>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="productsPan pan">
+                <h1 class="at">Products</h1>
+                {% if products %}
+                    {% for product in products %}
+
+                    {% endfor %}
+                {% else %}
+                    <div class="center">
+                        <h1 class="no">No Products Available</h1>
+                    </div>
+                {% endif %}
+                <button class="add">Add Products</button>
+            </div>
+            <div class="emailsPan pan">
+                <h1 class="at">Emails</h1>
+                {% if emails %}
+                    {% for email in emails %}
+
+                    {% endfor %}
+                {% else %}
+                    <div class="center">
+                        <h1 class="no">No Emails Available</h1>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const ecom = document.querySelector('.ecom');
+        const orders = document.querySelector('.ord');
+        const ordPan = document.querySelector('.ordPan');
+        const ref = document.querySelector('.ref');
+        const refPan = document.querySelector('.refundPan');
+        const contact = document.querySelector('.contact')
+        const msgPan = document.querySelector('.messagesPan');
+        const pro = document.querySelector('.pro');
+        const proPan = document.querySelector('.productsPan');
+        const email = document.querySelector('.email');
+        const emailPan = document.querySelector('.emailsPan');
+
+        ecom.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('home') }}"
+        })
+
+        orders.classList.add('chosen');
+        ordPan.classList.add('show');
+
+        orders.addEventListener('click', ()=> {
+            orders.classList.add('chosen');
+            ordPan.classList.add('show');
+
+            ref.classList.remove('chosen');
+            refPan.classList.remove('show');
+
+            contact.classList.remove('chosen');
+            msgPan.classList.remove('show');
+
+            pro.classList.remove('chosen');
+            proPan.classList.remove('show');
+
+            email.classList.remove('chosen');
+            emailPan.classList.remove('show');
+        })
+
+        ref.addEventListener('click', ()=> {
+            ref.classList.add('chosen');
+            refPan.classList.add('show');
+
+            orders.classList.remove('chosen');
+            ordPan.classList.remove('show');
+
+            contact.classList.remove('chosen');
+            msgPan.classList.remove('show');
+
+            pro.classList.remove('chosen');
+            proPan.classList.remove('show');
+
+            email.classList.remove('chosen');
+            emailPan.classList.remove('show');
+        })
+
+        contact.addEventListener('click', ()=> {
+            contact.classList.add('chosen');
+            msgPan.classList.add('show');
+
+            orders.classList.remove('chosen');
+            ordPan.classList.remove('show');
+
+            ref.classList.remove('chosen');
+            refPan.classList.remove('show');
+
+            pro.classList.remove('chosen');
+            proPan.classList.remove('show');
+
+            email.classList.remove('chosen');
+            emailPan.classList.remove('show');
+        })
+
+        pro.addEventListener('click', ()=> {
+            pro.classList.add('chosen');
+            proPan.classList.add('show');
+
+            orders.classList.remove('chosen');
+            ordPan.classList.remove('show');
+
+            ref.classList.remove('chosen');
+            refPan.classList.remove('show');
+
+            contact.classList.remove('chosen');
+            msgPan.classList.remove('show');
+
+            email.classList.remove('chosen');
+            emailPan.classList.remove('show');
+        })
+
+        email.addEventListener('click', ()=> {
+            email.classList.add('chosen');
+            emailPan.classList.add('show');
+
+            orders.classList.remove('chosen');
+            ordPan.classList.remove('show');
+
+            ref.classList.remove('chosen');
+            refPan.classList.remove('show');
+
+            contact.classList.remove('chosen');
+            msgPan.classList.remove('show');
+
+            pro.classList.remove('chosen');
+            proPan.classList.remove('show');
+        })
+
+    </script>
 </body>
 </html>

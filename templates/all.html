@@ -45,17 +45,13 @@
                 <label class="lb on">Order Number</label>
                 <input type="text" placeholder="#1234567" class="orderNum inp" name="orderNum" maxlength="7" required>
                 <label class="lb">Last 4 Digits Of Phone</label>
-                <input type="text" inputmode="numeric" maxlength="4" pattern="\d*" placeholder="1234" class="phoneNum inp" name="phoneNUm" required>
+                <input type="text" inputmode="numeric" maxlength="4" pattern="\d*" placeholder="1234" class="phoneNum inp" name="phoneNum" required>
                 <input type="submit" class="sub" value="Refund Order">
             </form>
         </div>
     </div>
 
     <div class="overlayed"></div>
-
-    <div class="contactCon">
-        <div class="contactBox"></div>
-    </div>
 
     <div class="emailCon">
         <div class="emailBox"></div>
@@ -72,6 +68,10 @@
         const contact = document.querySelector('.contact');
         const x = document.querySelector('.x');
         const phoneNum = document.querySelector(".phoneNum");
+
+        contact.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('contact')}}"
+        })
 
         phoneNum.addEventListener("input", () => {
         phoneNum.value = phoneNum.value.replace(/\D/g, '').slice(0, 4);

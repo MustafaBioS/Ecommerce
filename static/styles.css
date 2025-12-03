@@ -176,6 +176,7 @@ body, html {
     cursor: pointer;
     color: black;
     text-decoration: none;
+    user-select: none;
     overflow: hidden;
 }
 
@@ -355,6 +356,164 @@ body, html {
     opacity: 0.5;
     cursor: pointer;
 }
+
+.chosen {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color:black;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+    user-select: none;
+    overflow: hidden;
+}
+
+.chosen::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 0;
+    background-color: #000;
+    transition: all 0.5s ease;
+}
+
+.chosen::after {
+    width: 100%;
+}
+
+.ref {
+    font-size: 26px;
+}
+
+.adminCon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 75px);
+    width: 100%;
+}
+
+.adminPanel {
+    background-color: black;
+    box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.7);
+    height: 700px;
+    width: 900px;
+    border-radius: 15px;
+    overflow-y: auto;
+}
+
+.at {
+    color: white;
+    text-align: center;
+    font-size: 65px;
+    margin-top: 40px;
+}
+
+.pan {
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.pan.show {
+    display: flex;
+}
+
+.refBar {
+    width: 90%;
+    background-color: white;
+    height: 50px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    user-select: none;
+}
+
+.ron, .rpn {
+    font-size: 20px;
+    text-align: center;
+}
+
+.rpn {
+    margin-left: 40px;
+}
+
+.ro {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.trash {
+    margin-left: 10%;
+    height: 40px;
+    transition: all 0.3s ease;
+}
+
+.trash:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 55%;
+    width: 100%;
+}
+
+.no {
+    color: white;
+    font-size: 50px;
+    opacity: 0.7;
+}
+
+.add {
+    height: 60px;
+    width: 150px;
+    border-radius: 12px;
+    font-size: 19px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.add:hover {
+    scale: 1.1;
+}
+
+.contactCon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 75px);
+    width: 100%;
+
+}
+
+.all {
+    border: 2px solid black;
+    height: 650px;
+    width: 1200px;
+}
+
+.cotitle {
+    margin-left: 50px;
+    margin-top: 35px;
+    font-size: 30px;
+}
+
+
 
 
 @media (max-width: 1000px) {
