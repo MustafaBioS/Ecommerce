@@ -34,6 +34,12 @@ class Refunds(db.Model):
     order = db.Column(db.Integer, nullable=False)
     phone = db.Column(db.Integer, nullable=False)
 
+class Messages(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text, nullable=False)
+    email = db.Column(db.Text, nullable=False)
+    phone = db.Column(db.Integer, nullable=False)
+    message = db.Column(db.Text, nullable=False)
 
 # Routes
 
@@ -72,7 +78,14 @@ def contact():
     if request.method == 'GET':
         return render_template('contact.html')
     if request.method == 'POST':
-        pass
+        name = request.form.get('name')
+        email = request.form.get('email')
+        phone = request.form.get('number')
+        message = request.form.get('msg')
+        new_msg = Messages(name=name, email=email, phone=phone, message=message)
+        db.session.add(new_msg)
+        db.session.commit()
+        return redirect(url_for('all'))
 
 
 # Run

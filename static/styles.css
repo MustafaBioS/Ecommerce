@@ -2,6 +2,7 @@ body, html {
     margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(243, 239, 239);
 }
 
 .vidCon {
@@ -143,6 +144,7 @@ body, html {
     height: 75px;
     display: flex;
     align-items: center;
+    background-color: rgb(243, 239, 239);
     flex-direction: row;
 }
 
@@ -167,6 +169,10 @@ body, html {
 }
 
 .txt {
+    font-size: 25px;
+}
+
+.nvsh {
     font-size: 25px;
 }
 
@@ -207,7 +213,6 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    width: 100%;
     height: 100%;
     gap: 30px;
     margin-right: 35px;
@@ -496,25 +501,83 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 75px);
+    height: calc(85vh - 75px);
     width: 100%;
-
+    background-color: rgb(243, 239, 239);
 }
 
 .all {
-    border: 2px solid black;
     height: 650px;
-    width: 1200px;
+    width: 1000px;
 }
 
 .cotitle {
-    margin-left: 50px;
     margin-top: 35px;
-    font-size: 30px;
+    font-size: 25px;
 }
 
+.corow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 50px;
+}
 
+.cinp {
+    width: 50%;
+    height: 50px;
+    margin-top: 25px;
+    padding-left: 10px;
+    outline: none;
+    border: 1px solid black;
+    background-color: transparent;
+}
 
+.cocol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.phone {
+    width: 100%;
+}
+
+.msg {
+    resize: none;
+    width: 100%;
+    height: 350px;
+    font-size: 20px;
+}
+
+.msg::placeholder {
+    font-size: 20px;
+}
+
+.cosub {
+    height: 50px;
+    width: 125px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    font-size: 19px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.cosub:hover {
+    background-color: transparent;
+    color: black;
+    cursor: pointer;
+}
+
+.phone::-webkit-inner-spin-button,
+.phone::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
 @media (max-width: 1000px) {
     .grid {
