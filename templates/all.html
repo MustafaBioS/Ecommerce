@@ -13,11 +13,10 @@
         <div class="left">
             <h1 class="ecom">Ecommerce</h1>
             <h1 class="hm anim">Home</h1>
+            <h1 class="nvsh anim">Shop All</h1>
             <h1 class="txt refund anim">Refund</h1>
             <h1 class="txt contact anim">Contact Us</h1>
         </div>
-        
-        <div class="center"></div>
 
         <div class="right">
             <img src="../static/user.png" class="prof icon">
@@ -68,6 +67,9 @@
         const contact = document.querySelector('.contact');
         const x = document.querySelector('.x');
         const phoneNum = document.querySelector(".phoneNum");
+        const all = document.querySelector('.nvsh');
+
+        all.classList.add('chosen');
 
         contact.addEventListener('click', ()=> {
             window.location.href = "{{ url_for('contact')}}"
