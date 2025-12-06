@@ -57,7 +57,7 @@
                         const trash = document.querySelector('.trash');
 
                         trash.addEventListener('click', ()=> {
-                            window.location.href = "{{ url_for('delete', refund_id=refund.id)}}"
+                            window.location.href = "{{ url_for('delete_refund', refund_id=refund.id)}}"
                         })
                     </script>
                     {% endfor %}
@@ -71,7 +71,10 @@
                 <h1 class="at">Messages</h1>
                 {% if messages %}
                     {% for message in messages %}
-
+                    <a href="{{ url_for('view', message_id=message.id) }}" class="msgBox">
+                        <h1 class="view">View Message</h1>
+                        <p class="mname">{{ message.name }}</p>
+                    </a>
                     {% endfor %}
                 {% else %}
                     <div class="center">
@@ -106,7 +109,6 @@
             </div>
         </div>
     </div>
-
 
     <script>
         const ecom = document.querySelector('.ecom');

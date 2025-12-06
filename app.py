@@ -54,7 +54,20 @@ def all():
 @app.route('/admin')
 def admin():
     refunds = Refunds.query.all()
-    return render_template('admin.html', refunds=refunds)
+    messages = Messages.query.all()
+    return render_template('admin.html', refunds=refunds, messages=messages)
+
+@app.route('/message/view/<int:message_id>')
+def view(message_id):
+    message = Messages.query.filter_by(id=message_id).first()
+    return render_template('view.html', message=message)
+
+@app.route('/message/delete/<int:message_id>')
+def delete_message(message_id):
+    message = Messages.query.filter_by(id=message_id).first()
+    db.session.delete(message)
+    db.session.commit()
+    return redirect(url_for("admin"))
 
 @app.route('/refund', methods=['POST'])
 def refund():
@@ -67,7 +80,7 @@ def refund():
         return redirect(url_for("all"))
 
 @app.route('/refund/delete/<int:refund_id>')
-def delete(refund_id):
+def delete_refund(refund_id):
     ref = Refunds.query.filter_by(id=refund_id).first()
     db.session.delete(ref)
     db.session.commit()

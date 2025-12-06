@@ -31,7 +31,7 @@
     <div class="contactCon">
         <div class="all">
             <h1 class="cotitle">Contact Us</h1>
-            <form class="coform">
+            <form action="{{ url_for('contact')}}" method="post" class="coform">
                 <div class="corow">
                     <input type="text" name="name" class="name cinp" placeholder="Name" required>
                     <input type="email" name="email" class="email cinp" placeholder="Email@Address.com" required>
