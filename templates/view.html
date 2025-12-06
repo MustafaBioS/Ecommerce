@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce - Message View</title>
+    <link rel="icon" href="../static/4804045.png">
+    <link rel="stylesheet" href="../static/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+
+    <nav class="nvb">
+        <div class="left">
+            <h1 class="ecom">Ecommerce</h1>
+            <h1 class="hm anim">Home</h1>
+            <h1 class="nvsh anim">Shop All</h1>
+            <h1 class="txt refund anim">Refund</h1>
+            <h1 class="txt contact anim">Contact Us</h1>
+        </div>
+
+        <div class="right">
+            <img src="../static/user.png" class="prof icon">
+            <img src="../static/cart.png" class="cart icon">
+        </div>
+    </nav>
+
+    <div class="bCon">
+        <div class="bBox">
+            {{ message.name }}<br>
+            {{ message.id }}<br>
+            {{ message.phone }}<br>
+            {{ message.email }}<br>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
