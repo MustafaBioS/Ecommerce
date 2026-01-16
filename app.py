@@ -1,6 +1,7 @@
 from flask import Flask, redirect, render_template, request, url_for
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from dotenv import load_dotenv
 import os
 
@@ -40,6 +41,11 @@ class Messages(db.Model):
     email = db.Column(db.Text, nullable=False)
     phone = db.Column(db.Integer, nullable=False)
     message = db.Column(db.Text, nullable=False)
+
+class Users(UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.Text, nullable=False)
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
 # Routes
 
@@ -100,6 +106,9 @@ def contact():
         db.session.commit()
         return redirect(url_for('all'))
 
+@app.route("/profile", methods=["GET", "POST"])
+def profile():
+    pass
 
 # Run
 
