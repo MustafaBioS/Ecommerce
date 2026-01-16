@@ -507,8 +507,9 @@ body, html {
 }
 
 .all {
-    height: 650px;
-    width: 1000px;
+    width: 90%;
+    max-width: 1000px;
+    height: auto;
 }
 
 .cotitle {
@@ -606,7 +607,7 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(100% - 75px);
+    height: calc(100vh - 75px);
     width: 100%;
 }
 
@@ -615,6 +616,11 @@ body, html {
     width: 600px;
     background-color: black;
     border-radius: 12px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .phone::-webkit-inner-spin-button,
@@ -623,9 +629,24 @@ body, html {
     margin: 0;
 }
 
+.menu {
+    height: 40px;
+    display: none;
+}
+
 @media (max-width: 1000px) {
     .grid {
     grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 850px) {
+    .anim, .icon {
+        display: none;
+    }
+
+    .menu {
+        display: block;
     }
 }
 
@@ -633,7 +654,9 @@ body, html {
     .grid {
     grid-template-columns: 1fr;
     }
-    .title { font-size: 36px; }
+
+    .title { font-size: 50px; }
+
     .over { font-size: 1rem; }
 
     .retitle {
@@ -663,6 +686,12 @@ body, html {
         font-size: 28px;
         margin-top: 15px;
         margin-right: 20px;
+    }
+
+    .grid-item {
+        width: 95%;
+        height: 600px;
+        margin-bottom: 15px;
     }
 
 
