@@ -163,7 +163,7 @@ body, html {
     font-size: 25px;
 }
 
-.hm {
+.hme {
     font-size: 25px;
     margin-left: 40px;
 }
@@ -236,6 +236,7 @@ body, html {
     width: 100%;
     position: absolute;
     z-index: 50;
+    pointer-events: none;
 }
 
 .refundBox {
@@ -259,6 +260,7 @@ body, html {
 .refundBox.show {
     bottom: 20%;
     opacity: 1;
+    pointer-events: auto;
 }
 
 .overlayed {
@@ -632,6 +634,44 @@ body, html {
 .menu {
     height: 40px;
     display: none;
+    transition: all 0.4s ease;
+}
+
+.menu:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.menuBox {
+    height: calc(100vh - 75px);
+    width: 100%;
+    background-color: black;
+    position: fixed;
+    transform: translateY(1500px);
+    color: white;
+    transition: all 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.menuBox.show {
+    transform: translateY(0);
+}
+
+.mobAnim {
+    display: block !important;
+    font-size: 30px;
+    color: white; 
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.mobAnim:hover {
+    cursor: pointer;
+    color: white;
+    opacity: 0.7;
 }
 
 @media (max-width: 1000px) {
@@ -641,7 +681,7 @@ body, html {
 }
 
 @media (max-width: 850px) {
-    .anim, .icon {
+    .anim {
         display: none;
     }
 
