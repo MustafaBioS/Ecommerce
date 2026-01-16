@@ -83,8 +83,15 @@
         const contactnm = document.querySelector('.contactnm');
         const allnm = document.querySelector('.nvshnm');
 
+        const profile = document.querySelector(".prof");
+        const cart = document.querySelector('.cart');
+
+        profile.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('profile')}}";
+        });
+
         homenm.addEventListener('click', ()=> {
-            window.location.href = "{{ url_for('home') }}"
+            window.location.href = "{{ url_for('home') }}";
         });
 
         refundnm.addEventListener('click', ()=> {
@@ -95,7 +102,7 @@
         });
 
         contactnm.addEventListener('click', ()=> { {
-            window.location.href = "{{ url_for('contact') }}"
+            window.location.href = "{{ url_for('contact') }}";
         }});
 
         allnm.addEventListener('click', ()=> {

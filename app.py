@@ -108,7 +108,11 @@ def contact():
 
 @app.route("/profile", methods=["GET", "POST"])
 def profile():
-    pass
+    if request.method == "GET":
+        return render_template("profile.html")
+    if request.method == "POST":
+        email = request.form.get("email")
+        
 
 # Run
 
