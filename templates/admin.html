@@ -12,11 +12,11 @@
     <nav class="nvb">
         <div class="left">
             <h1 class="ecom">Ecommerce</h1>
-            <h1 class="hm hme ord">Orders</h1>
-            <h1 class="ref anim">Refunds</h1>
-            <h1 class="txt contact anim">Messages</h1>
-            <h1 class="txt pro anim">Products</h1>
-            <h1 class="txt email anim">Emails</h1>
+            <h1 class="adm hm hme ord anim" data-section="Orders">Orders</h1>
+            <h1 class="adm ref anim" data-section="Refunds">Refunds</h1>
+            <h1 class="adm txt contact anim" data-section="Messages">Messages</h1>
+            <h1 class="adm txt pro anim" data-section="Products">Products</h1>
+            <h1 class="adm txt email anim" data-section="Emails">Emails</h1>
         </div>
         
         <div class="right">
@@ -27,20 +27,29 @@
 
     </nav>
 
-    <div class="adminCon">
-        <div class="adminPanel">
-            <div class="ordPan pan">
-                <h1 class="at">Orders</h1>
-                {% if orders %}
-                    {% for order in orders %}
+    <div class="menuBox" style="z-index: 10000;">
+        <h1 class="adm ordnm mobAnim" data-section="Orders">Orders</h1>
+        <h1 class="adm refnm mobAnim" data-section="Refunds">Refunds</h1>
+        <h1 class="adm txt contactnm mobAnim" data-section="Messages">Messages</h1>
+        <h1 class="adm txt pronm mobAnim" data-section="Products">Products</h1>
+        <h1 class="adm txt emailnm mobAnim" data-section="Emails">Emails</h1>
+    </div>
 
-                    {% endfor %}
-                {% else %}
-                    <div class="center">
-                        <h1 class="no">No Orders Available</h1>
-                    </div>
-                {% endif %}
-            </div>
+        <div class="adminCon">
+            <div class="adminPanel">
+                <div class="ordPan pan">
+                    <h1 class="at">Orders</h1>
+                    {% if orders %}
+                        {% for order in orders %}
+
+                        {% endfor %}
+                    {% else %}
+                        <div class="center">
+                            <h1 class="no">No Orders Available</h1>
+                        </div>
+                    {% endif %}
+                </div>
+
             <div class="refundPan pan">
                 <h1 class="at">Refunds</h1>
                 {% if refunds %}
@@ -66,6 +75,7 @@
                     </div>
                 {% endif %}
             </div>
+
             <div class="messagesPan pan">
                 <h1 class="at">Messages</h1>
                 {% if messages %}
@@ -81,19 +91,38 @@
                     </div>
                 {% endif %}
             </div>
+
             <div class="productsPan pan">
                 <h1 class="at">Products</h1>
                 {% if products %}
                     {% for product in products %}
-
+                        <div class="emailDiv" style="width: 400px; color: black; font-size: 25px; margin-bottom: 10px;">
+                            {{ product.name }}
+                            <img src="../static/trash.png" class="delPro trash" alt="Trash Icon">
+                        </div>
                     {% endfor %}
                 {% else %}
                     <div class="center">
                         <h1 class="no">No Products Available</h1>
                     </div>
                 {% endif %}
-                <button class="add">Add Products</button>
+                <button class="add" style="margin-top: 300px;">Add Products</button>
+                {% if products %}
+                    {% for product in products %}
+
+                        <script>
+                            const delPro = document.querySelector('.delPro');
+
+                            delPro.addEventListener('click', ()=> {
+                                window.location.href = "{{ url_for('delete_product', product_id=product.id)}}";
+                            })
+
+                        </script>
+
+                    {% endfor %}
+                {% endif %}
             </div>
+
             <div class="emailsPan pan">
                 <h1 class="at">Emails</h1>
                 {% if users %}
@@ -117,8 +146,41 @@
                     </div>
                 {% endif %}
             </div>
+
+            <div class="addMod">
+                <h class="at addt">Add Product</h1>
+                <form class="addPro" action="{{ url_for('product')}}" method="post">
+                    <label class="lb alb">Product Name:</label>
+                        <input type="text" name="name" class="addName addInp" required>
+                    
+                    <label class="lb alb">Product Price</label>
+                        <input type="number" name="price" class="addPrice addInp" required>
+
+                    <label class="lb alb">Product Quantity</label>
+                        <input type="number" name="quantity" class="addQuantity addInp" required>
+
+                    <label class="lb alb">Pictures</label>
+                        <input type="file" name="pics[]" class="addPics" multiple>
+
+                    <label class="lb alb">Category</label>
+                        <select name="category" class="addCategory" required>
+                            <option value="" selected disabled>Select a category</option>
+                            <option value="Crewneck">Crewneck</option>
+                            <option value="Bottom">Bottom</option>
+                            <option value="Top">Top</option>
+                            <option value="Hoodie">Hoodie</option>
+                            <option value="Jacket">Jacket</option>
+                        </select>
+                    
+                    <input type="submit" value="Add" class="sub" style="width: 125px; margin-top: 20px; height: 50px;">
+                </form>
+            </div>
+
         </div>
+
     </div>
+
+  
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script>
@@ -133,6 +195,160 @@
         const proPan = document.querySelector('.productsPan');
         const email = document.querySelector('.email');
         const emailPan = document.querySelector('.emailsPan');
+
+        const menu = document.querySelector('.menu');
+        const menuBox = document.querySelector('.menuBox');
+
+        const ordnm = document.querySelector('.ordnm');
+        const refnm = document.querySelector('.refnm');
+        const contactnm = document.querySelector('.contactnm');
+        const pronm = document.querySelector('.pronm');
+        const emailnm = document.querySelector('.emailnm');
+
+        const profile = document.querySelector(".prof");
+        const cart = document.querySelector('.cart');
+
+        const admin = document.querySelector('.admin');
+        const adminnm = document.querySelector('.adminnm');
+
+        const adm = document.querySelectorAll('.adm');
+        const addBtn = document.querySelector('.add');
+        const addMod = document.querySelector('.addMod');
+
+        addBtn.addEventListener('click', ()=> {
+            if (addMod.classList.contains('show')) {
+                proPan.style.display = 'flex';
+                addMod.classList.remove('show');
+            }
+            else {
+                proPan.style.display = 'none';
+                addMod.classList.add('show');
+            }
+        })
+
+        if (admin && adminnm) {
+            admin.addEventListener('click', ()=> {
+                window.location.href = "{{ url_for('admin')}}";
+            })
+
+            adminnm.addEventListener('click', ()=> {
+                window.location.href = "{{ url_for('admin')}}";
+            })
+        }
+
+
+        cart.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('cart')}}";
+        })
+
+        profile.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('profile')}}";
+        });
+
+        ordnm.addEventListener('click', ()=> {
+            menuBox.classList.remove('show');
+
+            orders.classList.add('chosen');
+            ordPan.classList.add('show');
+
+            ref.classList.remove('chosen');
+            refPan.classList.remove('show');
+
+            contact.classList.remove('chosen');
+            msgPan.classList.remove('show');
+
+            pro.classList.remove('chosen');
+            proPan.classList.remove('show');
+
+            email.classList.remove('chosen');
+            emailPan.classList.remove('show');
+        });
+
+        refnm.addEventListener('click', ()=> {
+            menuBox.classList.remove('show');
+
+            ref.classList.add('chosen');
+            refPan.classList.add('show');
+
+            orders.classList.remove('chosen');
+            ordPan.classList.remove('show');
+
+            contact.classList.remove('chosen');
+            msgPan.classList.remove('show');
+
+            pro.classList.remove('chosen');
+            proPan.classList.remove('show');
+
+            email.classList.remove('chosen');
+            emailPan.classList.remove('show');
+        });
+
+        contactnm.addEventListener('click', ()=> { {
+            menuBox.classList.remove('show');
+
+            contact.classList.add('chosen');
+            msgPan.classList.add('show');
+
+            orders.classList.remove('chosen');
+            ordPan.classList.remove('show');
+
+            ref.classList.remove('chosen');
+            refPan.classList.remove('show');
+
+            pro.classList.remove('chosen');
+            proPan.classList.remove('show');
+
+            email.classList.remove('chosen');
+            emailPan.classList.remove('show');
+        }});
+
+        pronm.addEventListener('click', ()=> {
+            menuBox.classList.remove('show');
+
+            pro.classList.add('chosen');
+            proPan.classList.add('show');
+
+            orders.classList.remove('chosen');
+            ordPan.classList.remove('show');
+
+            ref.classList.remove('chosen');
+            refPan.classList.remove('show');
+
+            contact.classList.remove('chosen');
+            msgPan.classList.remove('show');
+
+            email.classList.remove('chosen');
+            emailPan.classList.remove('show');
+        });
+
+        emailnm.addEventListener('click', ()=> {
+            menuBox.classList.remove('show');
+
+            email.classList.add('chosen');
+            emailPan.classList.add('show');
+
+            orders.classList.remove('chosen');
+            ordPan.classList.remove('show');
+
+            ref.classList.remove('chosen');
+            refPan.classList.remove('show');
+
+            contact.classList.remove('chosen');
+            msgPan.classList.remove('show');
+
+            pro.classList.remove('chosen');
+            proPan.classList.remove('show');
+        });
+
+        menu.addEventListener('click', ()=> {
+            if (menuBox.classList.contains('show')) {
+                menuBox.classList.remove('show');
+            }
+
+            else {
+                menuBox.classList.add('show');
+            }
+        });
 
         ecom.addEventListener('click', ()=> {
             window.location.href = "{{ url_for('home') }}"

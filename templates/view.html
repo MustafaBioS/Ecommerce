@@ -56,6 +56,115 @@
     <script>
         const del = document.querySelector('.del');
 
+        const ecom = document.querySelector('.ecom');
+        const home = document.querySelector('.hm');
+        const refund = document.querySelector('.refund');
+        const overlay = document.querySelector('.overlayed');
+        const refundCon = document.querySelector('.refundCon');
+        const refundBox = document.querySelector('.refundBox');
+        const contact = document.querySelector('.contact');
+        const x = document.querySelector('.x');
+        const phoneNum = document.querySelector(".phoneNum");
+        const all = document.querySelector('.nvsh');
+        const menu = document.querySelector('.menu');
+        const menuBox = document.querySelector('.menuBox');
+
+        const homenm = document.querySelector('.hmnm');
+        const refundnm = document.querySelector('.refundnm');
+        const contactnm = document.querySelector('.contactnm');
+        const allnm = document.querySelector('.nvshnm');
+
+        const profile = document.querySelector(".prof");
+        const cart = document.querySelector('.cart');
+
+        const admin = document.querySelector('.admin');
+        const adminnm = document.querySelector('.adminnm');
+
+        if (admin && adminnm) {
+            admin.addEventListener('click', ()=> {
+                window.location.href = "{{ url_for('admin')}}";
+            })
+
+            adminnm.addEventListener('click', ()=> {
+                window.location.href = "{{ url_for('admin')}}";
+            })
+        }
+
+
+        cart.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('cart')}}";
+        })
+
+        profile.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('profile')}}";
+        });
+
+        homenm.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('home') }}";
+        });
+
+        refundnm.addEventListener('click', ()=> {
+            menuBox.classList.remove('show')
+
+            refundBox.classList.add('show');
+            overlay.classList.add('show');
+        });
+
+        contactnm.addEventListener('click', ()=> { {
+            window.location.href = "{{ url_for('contact') }}";
+        }});
+
+        all.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('all')}}";
+        })
+
+        allnm.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('all')}}";
+        });
+
+        menu.addEventListener('click', ()=> {
+            if (menuBox.classList.contains('show')) {
+                menuBox.classList.remove('show');
+            }
+
+            else {
+                menuBox.classList.add('show');
+            }
+        });
+
+        contact.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('contact')}}"
+        })
+
+        phoneNum.addEventListener("input", () => {
+            phoneNum.value = phoneNum.value.replace(/\D/g, '').slice(0, 4);
+        });
+
+        refund.addEventListener('click', ()=> {
+            refundBox.classList.add('show');
+            overlay.classList.add('show');
+        });
+
+        x.addEventListener('click', ()=> {
+            refundBox.classList.remove('show');
+            overlay.classList.remove('show');
+        })
+
+        document.addEventListener('click', (e)=> {
+            if (refundBox.classList.contains("show") && !refund.contains(e.target) && !refundnm.contains(e.target) && !refundBox.contains(e.target)) {
+                refundBox.classList.remove('show')
+                overlay.classList.remove('show');
+            }
+        })
+
+        home.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('home')}}"
+        })
+
+        ecom.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('home')}}"
+        })
+
         del.addEventListener('click', ()=> {
             window.location.href = "{{ url_for('delete_message', message_id=message.id) }}";
         })

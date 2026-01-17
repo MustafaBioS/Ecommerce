@@ -23,7 +23,7 @@
 
         <div class="grid">
             <div class="grid-item g1">
-                <img src="../static/Shop All.png" class="pic">
+                <img src="../static/Shop All.png" loading="lazy" class="pic">
                 <div class="over"></div>
                 <div class="shopping">
                     <h1 class="shall">Shop All</h1>
@@ -32,7 +32,7 @@
             </div>
             
             <div class="grid-item g2">
-                <img src="../static/Jackets.png" class="pic">
+                <img src="../static/Jackets.png" loading="lazy" class="pic">
                 <div class="over"></div>
                 <div class="shopping">
                     <h1 class="shall">Jackets</h1>
@@ -41,7 +41,7 @@
             </div>
             
             <div class="grid-item g3">
-                <img src="../static/Tops.png" class="pic">
+                <img src="../static/Tops.png" loading="lazy" class="pic">
                 <div class="over"></div>
                 <div class="shopping">
                     <h1 class="shall">Bottoms</h1>
@@ -50,7 +50,7 @@
             </div>
 
             <div class="grid-item g4">
-                <img src="../static/Bottom.png" class="pic">
+                <img src="../static/Bottom.png" loading="lazy" class="pic">
                 <div class="over"></div>
                 <div class="shopping">
                     <h1 class="shall">Tops</h1>
@@ -59,7 +59,7 @@
             </div>
 
             <div class="grid-item g5">
-                <img src="../static/Hoodies.png" class="pic">
+                <img src="../static/Hoodies.png" loading="lazy" class="pic">
                 <div class="over"></div>
                 <div class="shopping">
                     <h1 class="shall">Hoodies</h1>
@@ -68,7 +68,7 @@
             </div>
 
             <div class="grid-item g6">
-                <img src="../static/Crewnecks.png" class="pic">
+                <img src="../static/Crewnecks.png" loading="lazy" class="pic">
                 <div class="over"></div>
                 <div class="shopping">
                     <h1 class="shall">Crewnecks</h1>
@@ -85,6 +85,13 @@
 
         shop.addEventListener('click', ()=> {
             window.location.href = "{{ url_for('all')}}"
+        })
+
+        document.addEventListener('DOMContentLoaded', ()=> {
+            const pic = document.querySelectorAll('.pic');
+            pic.forEach(p => {
+                p.classList.add('show');
+            });
         })
     </script>
 </body>

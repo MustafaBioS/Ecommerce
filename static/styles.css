@@ -71,11 +71,11 @@ body, html {
 .grid-item {
     position: relative;
     overflow: hidden;
-    height: 800px;
-    width: 99%;
+    height: 750px;
+    width: 85%;
     aspect-ratio: 630 / 800;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 30px;
     border-radius: 15px;
     display: flex;
     align-items: center;
@@ -89,6 +89,14 @@ body, html {
     width: 99%;
     object-fit: cover;
     border-radius: 15px;
+    opacity: 0;
+    transform: translateY(500px);
+    transition: all 0.3s ease;
+}
+
+.pic.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .over {
@@ -404,6 +412,7 @@ body, html {
     justify-content: center;
     height: calc(100vh - 75px);
     width: 100%;
+    background-color: rgb(243, 239, 239);
 }
 
 .adminPanel {
@@ -773,6 +782,79 @@ body, html {
     border-radius: 12px;
 }
 
+.addMod {
+    height: 700px;
+    width: 900px;
+    z-index: 51050150;
+    background-color: rgb(0, 0, 0);
+    position: fixed;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(500px);
+    transition: all 0.3s ease;
+}
+
+.addMod.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.addt {
+    margin-top: 35px;
+}
+
+.addPro {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.addInp {
+    height: 35px;
+    width: 300px;
+    border-radius: 12px;
+    padding-left: 15px;
+    font-size: 18px;
+    border: none;
+    outline: none;
+}
+
+.addName {
+    margin-bottom: 20px;
+}
+
+.addPrice {
+    margin-bottom: 20px;
+}
+
+.addQuantity {
+    margin-bottom: 20px;
+}
+
+.addPics {
+    margin-bottom: 20px;
+}
+
+.alb {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.productsPan {
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    font-size: 20px;
+    overflow-y: auto;
+}
 
 @media (max-width: 1000px) {
     .grid {
