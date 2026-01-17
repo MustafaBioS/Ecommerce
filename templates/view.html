@@ -17,11 +17,15 @@
             <h1 class="nvsh anim">Shop All</h1>
             <h1 class="txt refund anim">Refund</h1>
             <h1 class="txt contact anim">Contact Us</h1>
+            {% if current_user.is_admin %}
+                <h1 class="txt admin anim">Admin</h1>
+            {% endif %}
         </div>
 
         <div class="right">
             <img src="{{ url_for('static', filename='user.png')}}" class="prof icon">
             <img src="{{ url_for('static', filename='cart.png')}}" class="cart icon">
+            <img src="{{ url_for('static', filename='menu.png')}}" class="menu icon">
         </div>
     </nav>
 
@@ -31,6 +35,7 @@
             {{ message.id }}<br>
             {{ message.phone }}<br>
             {{ message.email }}<br>
+            <button class="del">Delete</button>
         </div>
     </div>
 
@@ -39,9 +44,21 @@
         <h1 class="nvshnm mobAnim">Shop All</h1>
         <h1 class="txt refundnm mobAnim">Refund</h1>
         <h1 class="txt contactnm mobAnim">Contact Us</h1>
+        {% if current_user.is_admin %}
+            <h1 class="txt adminnm mobAnim">Admin</h1>
+        {% endif %}
     </div>
 
 
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        const del = document.querySelector('.del');
+
+        del.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('delete_message', message_id=message.id) }}";
+        })
+    </script>
 </body>
 </html>

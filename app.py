@@ -1,7 +1,7 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user, login_user, LoginManager
 from dotenv import load_dotenv
 import os
 
@@ -19,6 +19,10 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'profile'
+
 # Database
 
 class Items(db.Model):
@@ -26,9 +30,19 @@ class Items(db.Model):
     quantity = db.Column(db.Integer, nullable=False, default=0)
     name = db.Column(db.String(64), nullable=False)
     category = db.Column(db.String(24), nullable=False)
+    price = db.Column(db.Float, nullable=False)
     first_pic = db.Column(db.String(128), nullable=False)
     sec_pic = db.Column(db.String(128), nullable=False)
     third_pic = db.Column(db.String(128), nullable=False)
+    fourth_pic = db.Column(db.String(128), nullable=False)
+
+class CartItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(100), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey("items.id"))
+    quantity = db.Column(db.Integer, default=1)
+
+    product = db.relationship("Items")
 
 class Refunds(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,12 +56,16 @@ class Messages(db.Model):
     phone = db.Column(db.Integer, nullable=False)
     message = db.Column(db.Text, nullable=False)
 
-class Users(UserMixin):
+class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.Text, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
 # Routes
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
 
 @app.route('/')
 def home():
@@ -59,9 +77,13 @@ def all():
 
 @app.route('/admin')
 def admin():
-    refunds = Refunds.query.all()
-    messages = Messages.query.all()
-    return render_template('admin.html', refunds=refunds, messages=messages)
+    if current_user.is_admin:
+        refunds = Refunds.query.all()
+        messages = Messages.query.all()
+        users = Users.query.all()
+        return render_template('admin.html', refunds=refunds, messages=messages, users=users)
+    else:
+        return redirect(url_for('home'))
 
 @app.route('/message/view/<int:message_id>')
 def view(message_id):
@@ -112,7 +134,39 @@ def profile():
         return render_template("profile.html")
     if request.method == "POST":
         email = request.form.get("email")
-        
+
+        usersEmail = Users.query.filter_by(email=email).first()
+
+        if email == "AdminEmail@gmail.com":
+            if not usersEmail:
+                user = Users(email=email, is_admin=True)
+                db.session.add(user)
+                db.session.commit()
+            login_user(user)
+            flash("Logged In As Admin!")
+            return redirect(url_for('profile'))
+        else:
+            if not usersEmail:
+                user = Users(email=email, is_admin=False)
+                db.session.add(user)
+                db.session.commit()
+                return redirect(url_for('profile'))
+            else:
+                return redirect(url_for('profile'))
+                
+@app.route("/profile/delete/<int:profile_id>")
+def profile_delete(profile_id):
+    prof = Users.query.filter_by(id=profile_id).first()
+    db.session.delete(prof)
+    db.session.commit()
+    return redirect(url_for('admin'))
+
+
+@app.route('/cart', methods=['GET', 'POST'])
+def cart():
+    if request.method == 'GET':
+        return render_template('cart.html')
+
 
 # Run
 
