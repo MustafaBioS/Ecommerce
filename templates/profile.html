@@ -34,7 +34,7 @@
         <h1 class="txt refundnm mobAnim">Refund</h1>
         <h1 class="txt contactnm mobAnim">Contact Us</h1>
         {% if current_user.is_admin %}
-            <h1 class="txt admin mobAnim">Admin</h1>
+            <h1 class="txt adminmm mobAnim">Admin</h1>
         {% endif %}
     </div>
 
@@ -89,6 +89,19 @@
         const profile = document.querySelector(".prof");
         const cart = document.querySelector('.cart');
 
+        const admin = document.querySelector('.admin');
+        const adminnm = document.querySelector('.adminnm');
+
+        if (admin && adminnm) {
+            admin.addEventListener('click', ()=> {
+                window.location.href = "{{ url_for('admin')}}";
+            })
+
+            adminnm.addEventListener('click', ()=> {
+                window.location.href = "{{ url_for('admin')}}";
+            })
+        }
+        
         cart.addEventListener('click', ()=> {
             window.location.href = "{{ url_for('cart')}}";
         })

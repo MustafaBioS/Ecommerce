@@ -31,10 +31,11 @@ class Items(db.Model):
     name = db.Column(db.String(64), nullable=False)
     category = db.Column(db.String(24), nullable=False)
     price = db.Column(db.Float, nullable=False)
-    first_pic = db.Column(db.String(128), nullable=False)
-    sec_pic = db.Column(db.String(128), nullable=False)
-    third_pic = db.Column(db.String(128), nullable=False)
-    fourth_pic = db.Column(db.String(128), nullable=False)
+    first_pic = db.Column(db.String(128))
+    sec_pic = db.Column(db.String(128))
+    third_pic = db.Column(db.String(128))
+    fourth_pic = db.Column(db.String(128))
+    size_chart = db.Column(db.String(128))
 
 class CartItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -73,7 +74,8 @@ def home():
 
 @app.route('/all')
 def all():
-    return render_template('all.html')
+    products = Items.query.all()
+    return render_template('all.html', products=products)
 
 @app.route('/admin')
 def admin():
@@ -81,7 +83,9 @@ def admin():
         refunds = Refunds.query.all()
         messages = Messages.query.all()
         users = Users.query.all()
-        return render_template('admin.html', refunds=refunds, messages=messages, users=users)
+        products = Items.query.all()
+
+        return render_template('admin.html', refunds=refunds, messages=messages, users=users, products=products)
     else:
         return redirect(url_for('home'))
 
@@ -113,6 +117,52 @@ def delete_refund(refund_id):
     db.session.delete(ref)
     db.session.commit()
     return redirect(url_for('admin'))
+
+@app.route("/products", methods=['POST'])
+def product():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        price = request.form.get('price')
+        quantity = request.form.get('quantity')
+        pics = request.files.getlist('pics[]')
+        category = request.form.get('category')
+
+
+        for pic in pics:
+            if pic.filename != '':
+                pic.save(f'uploads/{pic.filename}')
+
+        titled = name.title()
+
+        new_product = Items(name = titled,
+            price = price, 
+            quantity = quantity,
+            category = category,
+            first_pic = pics[0].filename if len(pics) > 0 else None,
+            sec_pic = pics[1].filename if len(pics) > 1 else None,
+            third_pic = pics[2].filename if len(pics) > 2 else None,
+            fourth_pic = pics[3].filename if len(pics) > 3 else None,
+            size_chart = pics[4].filename if len(pics) > 4 else None,)
+        
+        db.session.add(new_product)
+        db.session.commit()
+        return redirect(url_for('admin'))
+        
+@app.route("/products/delete/<int:product_id>")
+def delete_product(product_id):
+    product = Items.query.filter_by(id=product_id).first()
+
+    pics = [product.first_pic, product.sec_pic, product.third_pic, product.fourth_pic, product.size_chart]
+    for pic in pics:
+        if pic:
+            path = os.path.join('uploads', pic)
+            if os.path.exists(path):
+                os.remove(path)
+
+    db.session.delete(product)
+    db.session.commit()
+    return redirect(url_for('admin'))
+            
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -160,7 +210,6 @@ def profile_delete(profile_id):
     db.session.delete(prof)
     db.session.commit()
     return redirect(url_for('admin'))
-
 
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
