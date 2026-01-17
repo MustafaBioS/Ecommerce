@@ -19,11 +19,10 @@
             <h1 class="txt email anim">Emails</h1>
         </div>
         
-        <div class="center"></div>
-
         <div class="right">
             <img src="../static/user.png" class="prof icon">
             <img src="../static/cart.png" class="cart icon">
+            <img src="{{ url_for('static', filename='menu.png')}}" class="menu icon">
         </div>
 
     </nav>
@@ -97,9 +96,20 @@
             </div>
             <div class="emailsPan pan">
                 <h1 class="at">Emails</h1>
-                {% if emails %}
-                    {% for email in emails %}
+                {% if users %}
+                    {% for user in users %}
+                        <div class="emailDiv">
+                            {{ user.email }}
+                            <img src="../static/trash.png" class="delEm trash" alt="Trash Icon">
+                        </div>
 
+                    <script>
+                        const del = document.querySelector('.delEm');
+
+                        del.addEventListener('click', ()=> {
+                            window.location.href = "{{ url_for('profile_delete', profile_id=user.id)}}"
+                        })
+                    </script>
                     {% endfor %}
                 {% else %}
                     <div class="center">
@@ -110,6 +120,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script>
         const ecom = document.querySelector('.ecom');
         const orders = document.querySelector('.ord');

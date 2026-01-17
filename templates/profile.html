@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ecommerce - Email</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
 
@@ -15,6 +16,9 @@
             <h1 class="nvsh anim">Shop All</h1>
             <h1 class="txt refund anim">Refund</h1>
             <h1 class="txt contact anim">Contact Us</h1>
+            {% if current_user.is_admin %}
+                <h1 class="txt admin anim">Admin</h1>
+            {% endif %}
         </div>
 
         <div class="right">
@@ -24,11 +28,140 @@
         </div>
     </nav>
 
+    <div class="menuBox">
+        <h1 class="hmnm mobAnim">Home</h1>
+        <h1 class="nvshnm mobAnim">Shop All</h1>
+        <h1 class="txt refundnm mobAnim">Refund</h1>
+        <h1 class="txt contactnm mobAnim">Contact Us</h1>
+        {% if current_user.is_admin %}
+            <h1 class="txt admin mobAnim">Admin</h1>
+        {% endif %}
+    </div>
+
+    <div class="refundCon">
+        <div class="refundBox">
+            <div class="xCon">
+                <h1 class="x">X</h1>
+            </div>
+            <h1 class="retitle">Start Your Request</h1>
+            <p class="redesc">Quick Returns, Smooth Exchanges.</p>
+            <form action="{{ url_for('refund')}}" class="reform" method="post">
+                <label class="lb on">Order Number</label>
+                <input type="text" placeholder="#1234567" class="orderNum inp" name="orderNum" maxlength="7" required>
+                <label class="lb">Last 4 Digits Of Phone</label>
+                <input type="text" inputmode="numeric" maxlength="4" pattern="\d*" placeholder="1234" class="phoneNum inp" name="phoneNum" required>
+                <input type="submit" class="sub" value="Refund Order">
+            </form>
+        </div>
+    </div>
+
+    <div class="overlayed"></div>
 
     <div class="profileCon">
+        <h2 class="head2">Sign Up</h2>
+        <h1 class="head1">Get Early Access</h1>
             <form class="profileForm" action="{{ url_for('profile') }}" method="post">
                 <input type="email" name="email" class="emailInp">
+                <input type="submit" class="submitBtn">
             </form>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        const ecom = document.querySelector('.ecom');
+        const home = document.querySelector('.hm');
+        const refund = document.querySelector('.refund');
+        const overlay = document.querySelector('.overlayed');
+        const refundCon = document.querySelector('.refundCon');
+        const refundBox = document.querySelector('.refundBox');
+        const contact = document.querySelector('.contact');
+        const x = document.querySelector('.x');
+        const phoneNum = document.querySelector(".phoneNum");
+        const all = document.querySelector('.nvsh');
+        const menu = document.querySelector('.menu');
+        const menuBox = document.querySelector('.menuBox');
+
+        const homenm = document.querySelector('.hmnm');
+        const refundnm = document.querySelector('.refundnm');
+        const contactnm = document.querySelector('.contactnm');
+        const allnm = document.querySelector('.nvshnm');
+
+        const profile = document.querySelector(".prof");
+        const cart = document.querySelector('.cart');
+
+        cart.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('cart')}}";
+        })
+
+        profile.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('profile')}}";
+        });
+
+        all.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('all')}}"
+        })
+
+        homenm.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('home') }}";
+        });
+
+        refundnm.addEventListener('click', ()=> {
+            menuBox.classList.remove('show')
+
+            refundBox.classList.add('show');
+            overlay.classList.add('show');
+        });
+
+        contactnm.addEventListener('click', ()=> { {
+            window.location.href = "{{ url_for('contact') }}";
+        }});
+
+        allnm.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('all')}}"
+        });
+
+        menu.addEventListener('click', ()=> {
+            if (menuBox.classList.contains('show')) {
+                menuBox.classList.remove('show');
+            }
+
+            else {
+                menuBox.classList.add('show');
+            }
+        });
+
+        contact.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('contact')}}"
+        })
+
+        phoneNum.addEventListener("input", () => {
+            phoneNum.value = phoneNum.value.replace(/\D/g, '').slice(0, 4);
+        });
+
+        refund.addEventListener('click', ()=> {
+            refundBox.classList.add('show');
+            overlay.classList.add('show');
+        });
+
+        x.addEventListener('click', ()=> {
+            refundBox.classList.remove('show');
+            overlay.classList.remove('show');
+        })
+
+        document.addEventListener('click', (e)=> {
+            if (refundBox.classList.contains("show") && !refund.contains(e.target) && !refundnm.contains(e.target) && !refundBox.contains(e.target)) {
+                refundBox.classList.remove('show')
+                overlay.classList.remove('show');
+            }
+        })
+
+        home.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('home')}}"
+        })
+
+        ecom.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('home')}}"
+        })
+    </script>
 </body>
 </html>
