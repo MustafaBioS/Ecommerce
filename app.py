@@ -64,6 +64,29 @@ class Cart(db.Model):
 
     item = db.relationship("Items")
 
+class Orders(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.String(36), nullable=False)
+    total = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String(20), nullable=False, default="pending")
+    firstName = db.Column(db.String(100), nullable=False)
+    lastName = db.Column(db.String(100), nullable=False)
+    Address = db.Column(db.Text(), nullable=False)
+    city = db.Column(db.Text(), nullable=False)
+    gov = db.Column(db.Text(), nullable=False)
+    postal = db.Column(db.Integer, nullable=True)
+    phone = db.Column(db.Integer, nullable=False)
+
+class OrderItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable=False)
+    item_id = db.Column(db.Integer, db.ForeignKey("items.id"), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+
+    item = db.relationship("Items")
+    order = db.relationship("Orders", backref="items")
+
 # Routes
 
 @login_manager.user_loader
@@ -287,6 +310,58 @@ def delete_cart(cart_id):
     db.session.delete(cart)
     db.session.commit()
     return redirect(url_for('cart'))
+
+@app.route("/checkout", methods=["GET", "POST"])
+def checkout():
+    user_id = get_current_user_id()
+    cart_items = Cart.query.filter_by(uid=user_id).all()
+    
+    if not cart_items:
+        return redirect(url_for("cart"))
+
+    total = sum(c.item.price * c.quantity for c in cart_items)
+    shipping_fee = 70
+    final_total = total + shipping_fee
+
+    if request.method == "POST":
+        firstName = request.form.get("firstName")
+        lastName = request.form.get("lastName")
+
+        address = request.form.get("address")
+
+        apt = request.form.get('apt')
+
+        city = request.form.get('city')
+        gov = request.form.get('gov')
+        postal = request.form.get('postal')
+
+        phone = request.form.get('phone')
+
+        order = Orders(uid=user_id, total=final_total, status="pending")
+        db.session.add(order)
+        db.session.commit()
+
+        for c in cart_items:
+            order_item = OrderItem(
+                order_id=order.id,
+                item_id=c.item.id,
+                quantity=c.quantity,
+                price=c.item.price
+            )
+            db.session.add(order_item)
+
+        Cart.query.filter_by(uid=user_id).delete()
+        db.session.commit()
+
+        return render_template(
+            "confirm.html",
+            order_id=order.id,
+            total=final_total,
+            shipping=shipping_fee,
+        )
+
+    return render_template("checkout.html", total=total, shipping_fee=shipping_fee)
+
 
 def get_current_user_id():
     if current_user.is_authenticated:
