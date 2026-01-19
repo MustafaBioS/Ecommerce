@@ -1,9 +1,10 @@
-from flask import Flask, flash, redirect, render_template, request, url_for
+from flask import Flask, flash, jsonify, redirect, render_template, request, url_for, send_from_directory, make_response
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, current_user, login_user, LoginManager
 from dotenv import load_dotenv
 import os
+import uuid
 
 # Initialization
 
@@ -37,14 +38,6 @@ class Items(db.Model):
     fourth_pic = db.Column(db.String(128))
     size_chart = db.Column(db.String(128))
 
-class CartItem(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    session_id = db.Column(db.String(100), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey("items.id"))
-    quantity = db.Column(db.Integer, default=1)
-
-    product = db.relationship("Items")
-
 class Refunds(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order = db.Column(db.Integer, nullable=False)
@@ -61,6 +54,15 @@ class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.Text, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
+
+class Cart(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.String(36), nullable=False)
+    item_id = db.Column(db.Integer, db.ForeignKey("items.id"), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False, default=1)
+    size = db.Column(db.String(2), nullable=True)
+
+    item = db.relationship("Items")
 
 # Routes
 
@@ -127,10 +129,14 @@ def product():
         pics = request.files.getlist('pics[]')
         category = request.form.get('category')
 
+        saved_filenames = []
+
 
         for pic in pics:
             if pic.filename != '':
+                filename = pic.filename
                 pic.save(f'uploads/{pic.filename}')
+                saved_filenames.append(filename)
 
         titled = name.title()
 
@@ -138,11 +144,11 @@ def product():
             price = price, 
             quantity = quantity,
             category = category,
-            first_pic = pics[0].filename if len(pics) > 0 else None,
-            sec_pic = pics[1].filename if len(pics) > 1 else None,
-            third_pic = pics[2].filename if len(pics) > 2 else None,
-            fourth_pic = pics[3].filename if len(pics) > 3 else None,
-            size_chart = pics[4].filename if len(pics) > 4 else None,)
+            first_pic = pics[0].filename if len(saved_filenames) > 0 else None,
+            sec_pic = pics[1].filename if len(saved_filenames) > 1 else None,
+            third_pic = pics[2].filename if len(saved_filenames) > 2 else None,
+            fourth_pic = pics[3].filename if len(saved_filenames) > 3 else None,
+            size_chart = pics[4].filename if len(saved_filenames) > 4 else None,)
         
         db.session.add(new_product)
         db.session.commit()
@@ -162,6 +168,15 @@ def delete_product(product_id):
     db.session.delete(product)
     db.session.commit()
     return redirect(url_for('admin'))
+
+@app.route("/product/view/<int:product_id>", methods=['GET', 'POST'])
+def view_product(product_id):
+
+    product = Items.query.filter_by(id=product_id).first()
+
+    if request.method == 'GET':
+        return render_template("product.html", product=product)
+
             
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -211,11 +226,62 @@ def profile_delete(profile_id):
     db.session.commit()
     return redirect(url_for('admin'))
 
+@app.route('/uploads/<filename>')
+def upload(filename):
+    return send_from_directory('uploads', filename)
+
+
+@app.after_request
+def set_guest_cookie(response):
+    if current_user.is_authenticated:
+        return response
+    if not request.cookies.get("guest_id"):
+        guest_id = str(uuid.uuid4())
+        response.set_cookie("guest_id", guest_id, max_age=60*60*24*365*10)
+    return response
+
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
-    if request.method == 'GET':
-        return render_template('cart.html')
+    user_id = get_current_user_id()
 
+    if request.method == 'GET':
+        cart_items = Cart.query.filter_by(uid=user_id).all()
+        response = [
+            {
+                "id": c.item.id,
+                "name": c.item.name,
+                "price": c.item.price,
+                "quantity": c.quantity,
+                "pic": c.item.first_pic
+            } for c in cart_items
+        ]
+        return render_template("cart.html", cart=response)
+
+    if request.method == "POST":
+        cart_data = request.json.get("cart", [])
+
+        for entry in cart_data:
+            item = Items.query.get(entry["id"])
+            if not item:
+                continue
+
+            cart_row = Cart.query.filter_by(uid=user_id, item_id=item.id,size=entry.get("size")).first()
+            if cart_row:
+                cart_row.quantity += entry["quantity"]
+            else:
+                new_row = Cart(uid=user_id, item_id=item.id, quantity=entry["quantity"], size=entry.get("size"))
+                db.session.add(new_row)
+
+        db.session.commit()
+
+
+        return jsonify({"status": "ok"})
+
+
+def get_current_user_id():
+    if current_user.is_authenticated:
+        return f"user_{current_user.id}"
+    return request.cookies.get("guest_id")
 
 # Run
 
