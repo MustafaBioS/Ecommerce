@@ -149,7 +149,7 @@
 
             <div class="addMod">
                 <h class="at addt">Add Product</h1>
-                <form class="addPro" action="{{ url_for('product')}}" method="post">
+                <form class="addPro" action="{{ url_for('product')}}" method="post" enctype="multipart/form-data">
                     <label class="lb alb">Product Name:</label>
                         <input type="text" name="name" class="addName addInp" required>
                     
