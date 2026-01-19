@@ -248,6 +248,7 @@ def cart():
         cart_items = Cart.query.filter_by(uid=user_id).all()
         response = [
             {
+                "cart_id": c.id,
                 "id": c.item.id,
                 "name": c.item.name,
                 "price": c.item.price,
@@ -255,7 +256,9 @@ def cart():
                 "pic": c.item.first_pic
             } for c in cart_items
         ]
-        return render_template("cart.html", cart=response)
+        total = sum(c.item.price * c.quantity for c in cart_items)
+
+        return render_template("cart.html", cart=response, total=total)
 
     if request.method == "POST":
         cart_data = request.json.get("cart", [])
@@ -277,6 +280,13 @@ def cart():
 
         return jsonify({"status": "ok"})
 
+@app.route('/cart/delete/<int:cart_id>')
+def delete_cart(cart_id):
+    cart = Cart.query.filter_by(id=cart_id).first()
+
+    db.session.delete(cart)
+    db.session.commit()
+    return redirect(url_for('cart'))
 
 def get_current_user_id():
     if current_user.is_authenticated:

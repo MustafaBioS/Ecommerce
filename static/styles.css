@@ -1115,6 +1115,115 @@ body, html {
     cursor: pointer;
 }
 
+.cartCon {
+    background-color: rgb(243, 239, 239);
+    display: flex;
+    flex-direction: column;
+}
+
+.cartTitle {
+    margin-top: 3%;
+    margin-left: 5%;
+    font-size: 50px;
+}
+
+.itemDiv {
+    margin-top: 2%;
+    margin-left: 5%;
+    display: flex;
+    width: 40%;
+    flex-direction: row;
+    border: 1px solid black;
+    height: 175px;
+    align-items: center;
+    border-radius: 12px;
+}
+
+.itemImg {
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-left: 3%;
+}
+
+.deets {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 4%;
+}
+
+.deleteDiv {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    width: 100%;
+}
+
+.cartDel {
+    height: 55px;
+    width: 55px;
+    margin-right: 7.5%;
+    transition: all 0.3s ease;
+}
+
+.cartDel:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.centerNone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 65vh;
+    width: 100%;
+}
+
+.none {
+    opacity: 0.6;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    text-align: center;
+}
+
+.totalCon {
+    display: flex;
+    width: 55%;
+    align-items: center;    
+    flex-direction: column;
+}
+
+.totalDiv {
+    margin-top: 2%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.total {
+    margin-left: 5%;
+    font-size: 18px;
+    width: 100px;
+}
+
+.checkout {
+    margin-top: 1%;
+    width: 45%;
+    height: 55px;
+    font-size: 20px;
+    background-color: black;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.checkout:hover {
+    background-color: transparent;
+    color: black;
+}
+
 @media (max-width: 1020px) {
     .productContainer {
         flex-direction: column;
