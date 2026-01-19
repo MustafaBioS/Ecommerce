@@ -910,7 +910,7 @@ body, html {
     width: 100%;
 }
 
-.addToCart, .quickView {
+.quickView {
     position: absolute;
     bottom: 10px;
     left: 50%;
@@ -929,19 +929,14 @@ body, html {
     transition: all 0.3s ease;
 }
 
-.addToCart:hover, .quickView:hover {
+.quickView:hover {
     background-color: transparent;
     color: black;
 }
 
-.imgCon:hover .addToCart {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-25px);
-}
-
 .imgCon:hover .quickView {
     opacity: 1;
-    transform: translateX(-50%) translateY(-85px);
+    transform: translateX(-50%) translateY(-50px);
 }
 
 .productContainer {
@@ -1224,6 +1219,80 @@ body, html {
     color: black;
 }
 
+.checkoutCon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 75px);
+    width: 100%;
+    flex-direction: row;
+}
+
+.leftCheck {
+    width: 50%;
+    height: 100%;
+    background-color: rgb(243, 239, 239);
+}
+
+.rightCheck {
+    width: 50%;
+    height: 100%;
+    background-color: white;
+}
+
+.delCon {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delieveryForm {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 65%;
+    flex-direction: column;
+    margin-top: 50px;
+    gap: 20px;
+}
+
+.deTitle {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.deInp {
+    height: 55px;
+    width: 100%;
+    padding-left: 20px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid black;
+}
+
+.payBtn {
+    height: 55px;
+    width: 100%;
+    border-radius: 5px;
+    color: white;
+    transition: all 0.3s ease;
+    background-color: #005bd1;
+    border: 0px solid black;
+    
+}
+
+.payBtn:hover {
+    background-color: #00459e;
+}
+
+.rowDiv {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+}
+
 @media (max-width: 1020px) {
     .productContainer {
         flex-direction: column;
@@ -1286,6 +1355,20 @@ body, html {
 
     .menu {
         display: block;
+    }
+
+    .itemDiv {
+        width: 90%;
+    }
+    
+    .cartCon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cartTitle {
+        margin-left: 0;
     }
 }
 

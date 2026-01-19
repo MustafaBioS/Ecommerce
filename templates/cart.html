@@ -124,6 +124,11 @@
         const adminnm = document.querySelector('.adminnm');
 
         const cartDel = document.querySelectorAll('.cartDel') 
+        const checkout = document.querySelector('.checkout');
+
+        checkout.addEventListener('click', ()=> {
+            window.location.href = "/checkout";
+        })
         
         cartDel.forEach(btn => {
             btn.addEventListener('click', () => {
