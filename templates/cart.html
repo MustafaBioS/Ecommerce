@@ -126,9 +126,13 @@
         const cartDel = document.querySelectorAll('.cartDel') 
         const checkout = document.querySelector('.checkout');
 
-        checkout.addEventListener('click', ()=> {
-            window.location.href = "/checkout";
-        })
+
+        if (checkout) {
+            checkout.addEventListener('click', ()=> {
+                window.location.href = "/checkout";
+            })
+        };
+
         
         cartDel.forEach(btn => {
             btn.addEventListener('click', () => {

@@ -41,7 +41,10 @@
                     <h1 class="at">Orders</h1>
                     {% if orders %}
                         {% for order in orders %}
-
+                            <div class="orderDiv" data-id="{{ order.id }}">
+                                <h1>Order: {{ order.id }}</h1>
+                                <img src="../static/trash.png" class="orderTrash" alt="Trash Icon" style="margin-left: 20px;" data-id="{{ order.id }}"> 
+                            </div>
                         {% endfor %}
                     {% else %}
                         <div class="center">
@@ -214,6 +217,24 @@
         const adm = document.querySelectorAll('.adm');
         const addBtn = document.querySelector('.add');
         const addMod = document.querySelector('.addMod');
+
+        const orderTrash = document.querySelectorAll('.orderTrash');
+
+        const orderDiv = document.querySelectorAll('.orderDiv');
+
+        orderTrash.forEach(delOrd => {
+            delOrd.addEventListener('click', ()=> {
+            const orderId = delOrd.dataset.id;
+            window.location.href = `/order/delete/${orderId}`;
+            })
+        });
+
+        orderDiv.forEach(div => {
+            div.addEventListener('click', ()=> {
+                const ordId = div.dataset.id;
+                window.location.href = `/order/view/${ordId}`;
+            })
+        });
 
         addBtn.addEventListener('click', ()=> {
             if (addMod.classList.contains('show')) {
