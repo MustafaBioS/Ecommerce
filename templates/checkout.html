@@ -23,7 +23,7 @@
     <div class="checkoutCon">
         <div class="leftCheck">
             <div class="delCon">
-                <form class="delieveryForm" action="" method="post">
+                <form class="delieveryForm" action="{{ url_for('checkout')}}" method="post">
                     <h1 class="deTitle">Delivery</h1>
                     <div class="rowDiv">
                         <input type="text" name="firstName" class="firstName deInp" placeholder="First Name" required>
@@ -41,22 +41,14 @@
                 </form>
             </div>
         </div>
-        <div class="rightCheck"></div>
+        <div class="rightCheck">
+            <h1 class="rightTitle">Cart total: {{ total }} EGP</h1>
+            <h1 class="rightTitle">Shipping: {{ shipping_fee }} EGP</h1>
+            <h1 class="rightTitle">Final total: {{ total + shipping_fee }} EGP</h1>
+        </div>
     </div>
    
-     <!-- <p>Cart total: {{ total }} EGP</p>
-    <p>Shipping: {{ shipping_fee }} EGP</p>
-    <p>Final total: {{ total + shipping_fee }} EGP</p>
 
-    <form method="POST">
-        <label>Governorate:</label>
-        <input type="text" name="governorate" required placeholder="Type your governorate">
-
-        <label>Address:</label>
-        <input type="text" name="address" placeholder="Street, building, etc.">
-
-        <button type="submit">Confirm Order</button>
-    </form> -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>

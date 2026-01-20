@@ -65,27 +65,40 @@ class Cart(db.Model):
     item = db.relationship("Items")
 
 class Orders(db.Model):
+
+    __tablename__ = 'orders'
+
     id = db.Column(db.Integer, primary_key=True)
     uid = db.Column(db.String(36), nullable=False)
     total = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(20), nullable=False, default="pending")
     firstName = db.Column(db.String(100), nullable=False)
     lastName = db.Column(db.String(100), nullable=False)
-    Address = db.Column(db.Text(), nullable=False)
+    address = db.Column(db.Text(), nullable=False)
+    apt = db.Column(db.Text(), nullable=True)
     city = db.Column(db.Text(), nullable=False)
     gov = db.Column(db.Text(), nullable=False)
     postal = db.Column(db.Integer, nullable=True)
     phone = db.Column(db.Integer, nullable=False)
 
+    items = db.relationship(
+        'OrderItem',
+        back_populates='order',
+        cascade='all, delete-orphan'
+    )
+
 class OrderItem(db.Model):
+
+    __tablename__ = 'order_item'
+
     id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id", ondelete='CASCADE'), nullable=False)
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
 
     item = db.relationship("Items")
-    order = db.relationship("Orders", backref="items")
+    order = db.relationship("Orders", back_populates='items')
 
 # Routes
 
@@ -109,8 +122,9 @@ def admin():
         messages = Messages.query.all()
         users = Users.query.all()
         products = Items.query.all()
+        orders = Orders.query.all()
 
-        return render_template('admin.html', refunds=refunds, messages=messages, users=users, products=products)
+        return render_template('admin.html', refunds=refunds, messages=messages, users=users, products=products, orders=orders)
     else:
         return redirect(url_for('home'))
 
@@ -220,21 +234,23 @@ def contact():
 def profile():
     if request.method == "GET":
         return render_template("profile.html")
+    
     if request.method == "POST":
         email = request.form.get("email")
 
-        usersEmail = Users.query.filter_by(email=email).first()
+        user = Users.query.filter_by(email=email).first()
 
         if email == "AdminEmail@gmail.com":
-            if not usersEmail:
+            if not user:
                 user = Users(email=email, is_admin=True)
                 db.session.add(user)
                 db.session.commit()
             login_user(user)
             flash("Logged In As Admin!")
             return redirect(url_for('profile'))
+        
         else:
-            if not usersEmail:
+            if not user:
                 user = Users(email=email, is_admin=False)
                 db.session.add(user)
                 db.session.commit()
@@ -337,7 +353,16 @@ def checkout():
 
         phone = request.form.get('phone')
 
-        order = Orders(uid=user_id, total=final_total, status="pending")
+        order = Orders(uid=user_id, total=final_total, status="pending",
+        firstName=firstName,
+        lastName=lastName,
+        address=address,
+        apt=apt,
+        city=city,
+        gov=gov,
+        postal=postal,
+        phone=phone,
+        )
         db.session.add(order)
         db.session.commit()
 
@@ -353,20 +378,29 @@ def checkout():
         Cart.query.filter_by(uid=user_id).delete()
         db.session.commit()
 
-        return render_template(
-            "confirm.html",
-            order_id=order.id,
-            total=final_total,
-            shipping=shipping_fee,
-        )
+        return redirect(url_for('home'))
 
     return render_template("checkout.html", total=total, shipping_fee=shipping_fee)
 
+
+@app.route('/order/delete/<int:order_id>')
+def delete_order(order_id):
+    order = Orders.query.filter_by(id=order_id).first()
+
+    db.session.delete(order)
+    db.session.commit()
+    return redirect(url_for('admin'))
 
 def get_current_user_id():
     if current_user.is_authenticated:
         return f"user_{current_user.id}"
     return request.cookies.get("guest_id")
+
+@app.route('/order/view/<int:order_id>')
+def view_order(order_id):
+    order = Orders.query.filter_by(id=order_id).first()
+
+    return render_template('orderView.html', order=order)
 
 # Run
 
