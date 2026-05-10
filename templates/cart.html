@@ -27,6 +27,7 @@
         </div>
 
         <div class="right">
+            <h1 class="txt balance">${{ current_user.balance }}</h1>
             <img src="{{ url_for('static', filename='user.png')}}" class="prof icon">
             <img src="{{ url_for('static', filename='cart.png')}}" class="cart icon">
             <img src="{{ url_for('static', filename='menu.png')}}" class="menu icon">
@@ -41,7 +42,7 @@
                     <img class="itemImg" src="{{ url_for('upload', filename=item.pic)}}" alt="{{ item.name }}">
                     <div class="deets">
                         <h3>{{ item.name }}</h3>
-                        <p>{{ item.price }} EGP</p>
+                        <p>${{ item.price }}</p>
                         <p>Quantity: {{ item.quantity }}</p>
                     </div>
                     <div class="deleteDiv">
@@ -53,7 +54,7 @@
             <div class="totalCon">
                 <div class="totalDiv">
                     <h1>Subtotal</h1>
-                    <span class="total">{{ total }} EGP</span>
+                    <span class="total">${{ total }}</span>
                 </div>
                 <button class="checkout">Checkout</button>
             </div>
@@ -126,6 +127,11 @@
         const cartDel = document.querySelectorAll('.cartDel') 
         const checkout = document.querySelector('.checkout');
 
+        const balance = document.querySelector('.balance');
+
+        balance.addEventListener('click', () => {
+            window.location.href = "{{ url_for('balance') }}";
+        })
 
         if (checkout) {
             checkout.addEventListener('click', ()=> {

@@ -23,6 +23,7 @@
         </div>
         
         <div class="right">
+            <h1 class="txt balance">${{ current_user.balance }}</h1>
             <img src="{{ url_for('static', filename='user.png')}}" class="prof icon">
             <img src="{{ url_for('static', filename='cart.png')}}" class="cart icon">
             <img src="{{ url_for('static', filename='menu.png')}}" class="menu icon">
@@ -104,6 +105,12 @@
 
         const admin = document.querySelector('.admin');
         const adminnm = document.querySelector('.adminnm');
+
+        const balance = document.querySelector('.balance');
+
+        balance.addEventListener('click', () => {
+            window.location.href = "{{ url_for('balance') }}";
+        })
 
         if (admin && adminnm) {
             admin.addEventListener('click', ()=> {

@@ -16,6 +16,7 @@
         </div>
 
         <div class="right">
+            <h1 class="txt balance">${{ current_user.balance }}</h1>
             <img src="{{ url_for('static', filename='cart.png')}}" class="cart icon">
         </div>
     </nav>
@@ -42,14 +43,26 @@
             </div>
         </div>
         <div class="rightCheck">
-            <h1 class="rightTitle">Cart total: {{ total }} EGP</h1>
-            <h1 class="rightTitle">Shipping: {{ shipping_fee }} EGP</h1>
-            <h1 class="rightTitle">Final total: {{ total + shipping_fee }} EGP</h1>
+            <h1 class="rightTitle">Cart total: ${{ total }}</h1>
+            <h1 class="rightTitle">Shipping: ${{ shipping_fee }}</h1>
+            <h1 class="rightTitle">Final total: ${{ total + shipping_fee }}</h1>
         </div>
     </div>
    
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        const balance = document.querySelector('.balance');
+        const cart = document.querySelector('.cart');
+
+        balance.addEventListener('click', () => {
+            window.location.href = "{{ url_for('balance') }}";
+        })
+
+        cart.addEventListener('click', ()=> {
+            window.location.href = "{{ url_for('cart')}}";
+        })
+    </script>
 </body>
 </html>
