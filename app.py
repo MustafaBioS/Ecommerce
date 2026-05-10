@@ -52,6 +52,7 @@ class Messages(db.Model):
 
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    balance = db.Column(db.Float, nullable=False, default=0.0)
     email = db.Column(db.Text, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
@@ -242,7 +243,7 @@ def profile():
 
         if email == "AdminEmail@gmail.com":
             if not user:
-                user = Users(email=email, is_admin=True)
+                user = Users(email=email, is_admin=True, balance=0.0)
                 db.session.add(user)
                 db.session.commit()
             login_user(user)
@@ -251,7 +252,7 @@ def profile():
         
         else:
             if not user:
-                user = Users(email=email, is_admin=False)
+                user = Users(email=email, is_admin=False, balance=0.0)
                 db.session.add(user)
                 db.session.commit()
                 return redirect(url_for('profile'))
@@ -336,35 +337,40 @@ def checkout():
         return redirect(url_for("cart"))
 
     total = sum(c.item.price * c.quantity for c in cart_items)
-    shipping_fee = 70
+    shipping_fee = 5
     final_total = total + shipping_fee
 
     if request.method == "POST":
-        firstName = request.form.get("firstName")
-        lastName = request.form.get("lastName")
+        if current_user.balance < final_total:
+            flash("Insufficient funds")
+            return redirect(url_for("cart"))
+        else:
+            firstName = request.form.get("firstName")
+            lastName = request.form.get("lastName")
 
-        address = request.form.get("address")
+            address = request.form.get("address")
 
-        apt = request.form.get('apt')
+            apt = request.form.get('apt')
 
-        city = request.form.get('city')
-        gov = request.form.get('gov')
-        postal = request.form.get('postal')
+            city = request.form.get('city')
+            gov = request.form.get('gov')
+            postal = request.form.get('postal')
 
-        phone = request.form.get('phone')
+            phone = request.form.get('phone')
 
-        order = Orders(uid=user_id, total=final_total, status="pending",
-        firstName=firstName,
-        lastName=lastName,
-        address=address,
-        apt=apt,
-        city=city,
-        gov=gov,
-        postal=postal,
-        phone=phone,
-        )
-        db.session.add(order)
-        db.session.commit()
+            order = Orders(uid=user_id, total=final_total, status="pending",
+            firstName=firstName,
+            lastName=lastName,
+            address=address,
+            apt=apt,
+            city=city,
+            gov=gov,
+            postal=postal,
+            phone=phone,
+            )
+            current_user.balance -= order.total
+            db.session.add(order)
+            db.session.commit()
 
         for c in cart_items:
             order_item = OrderItem(
@@ -378,7 +384,7 @@ def checkout():
         Cart.query.filter_by(uid=user_id).delete()
         db.session.commit()
 
-        return redirect(url_for('home'))
+        return redirect(url_for('cart'))
 
     return render_template("checkout.html", total=total, shipping_fee=shipping_fee)
 
@@ -401,6 +407,18 @@ def view_order(order_id):
     order = Orders.query.filter_by(id=order_id).first()
 
     return render_template('orderView.html', order=order)
+
+@app.route('/balance', methods=['GET', 'POST'])
+def balance():
+    if request.method == "GET":
+        return render_template('charge.html')
+    if request.method == "POST":
+        code = request.form.get("code")
+
+        if code == "123":
+            current_user.balance += 1000
+            db.session.commit()
+            return redirect(url_for('balance'))
 
 # Run
 

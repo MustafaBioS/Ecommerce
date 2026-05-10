@@ -23,6 +23,7 @@
         </div>
 
         <div class="right">
+            <h1 class="txt balance">${{ current_user.balance }}</h1>
             <img src="{{ url_for('static', filename='user.png')}}" class="prof icon">
             <img src="{{ url_for('static', filename='cart.png')}}" class="cart icon">
             <img src="{{ url_for('static', filename='menu.png')}}" class="menu icon">
@@ -146,7 +147,13 @@
         const minus = box.querySelector(".minus");
         const number = box.querySelector(".number");
         const input = box.querySelector(".quantityInp");
-        
+
+        const balance = document.querySelector('.balance');
+
+        balance.addEventListener('click', () => {
+            window.location.href = "{{ url_for('balance') }}";
+        })
+
         document.querySelectorAll('.adt').forEach(button => {
             button.addEventListener('click', async (e) => {
                 e.preventDefault();

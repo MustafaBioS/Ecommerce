@@ -1324,6 +1324,15 @@ body, html {
     font-size: 20px;
 }
 
+.balance {
+    transition: all 0.3s ease;
+}
+
+.balance:hover {
+    opacity: 0.65;
+    cursor: pointer;
+}
+
 @media (max-width: 1020px) {
     .productContainer {
         flex-direction: column;
@@ -1449,4 +1458,3 @@ body, html {
 
 
 }
-
