@@ -5,6 +5,7 @@ from flask_login import UserMixin, current_user, login_user, LoginManager
 from dotenv import load_dotenv
 import os
 import uuid
+import os
 
 # Initialization
 
@@ -23,6 +24,8 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'profile'
+
+port = int(os.environ.get("PORT", 5000))
 
 # Database
 
@@ -179,7 +182,7 @@ def product():
         titled = name.title()
 
         new_product = Items(name = titled,
-            price = price, 
+            price = price,
             quantity = quantity,
             category = category,
             first_pic = pics[0].filename if len(saved_filenames) > 0 else None,
@@ -187,11 +190,11 @@ def product():
             third_pic = pics[2].filename if len(saved_filenames) > 2 else None,
             fourth_pic = pics[3].filename if len(saved_filenames) > 3 else None,
             size_chart = pics[4].filename if len(saved_filenames) > 4 else None,)
-        
+
         db.session.add(new_product)
         db.session.commit()
         return redirect(url_for('admin'))
-        
+
 @app.route("/products/delete/<int:product_id>")
 def delete_product(product_id):
     product = Items.query.filter_by(id=product_id).first()
@@ -215,7 +218,7 @@ def view_product(product_id):
     if request.method == 'GET':
         return render_template("product.html", product=product)
 
-            
+
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -235,7 +238,7 @@ def contact():
 def profile():
     if request.method == "GET":
         return render_template("profile.html")
-    
+
     if request.method == "POST":
         email = request.form.get("email")
 
@@ -249,7 +252,7 @@ def profile():
             login_user(user)
             flash("Logged In As Admin!")
             return redirect(url_for('profile'))
-        
+
         else:
             if not user:
                 user = Users(email=email, is_admin=False, balance=0.0)
@@ -258,7 +261,7 @@ def profile():
                 return redirect(url_for('profile'))
             else:
                 return redirect(url_for('profile'))
-                
+
 @app.route("/profile/delete/<int:profile_id>")
 def profile_delete(profile_id):
     prof = Users.query.filter_by(id=profile_id).first()
@@ -332,7 +335,7 @@ def delete_cart(cart_id):
 def checkout():
     user_id = get_current_user_id()
     cart_items = Cart.query.filter_by(uid=user_id).all()
-    
+
     if not cart_items:
         return redirect(url_for("cart"))
 
@@ -423,4 +426,4 @@ def balance():
 # Run
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=port)
