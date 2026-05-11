@@ -4,7 +4,16 @@ Ecommerce is an ecommerce shopping website made with flask!
 > Go to /profile<br>
 > Enter "AdminEmail@gmail.com" as your email<br>
 > You'll see "Admin" in the navbar on top<br>
+> Add your Shop Items there!!!<br>
 <h1>Charging Balance</h1>
 > Go to /balance<br>
 > Put "123" as your code<br>
 > Your balance will increase by $1000<br>
+<h1>Self Hosting</h1>
+> Git Clone https://github.com/MustafaBioS/Ecommerce.git<br>
+> cd Ecommerce<br>
+> python app.py<br>
+> Now go to localhost:PORT and you should see the page!
+<h1>Extra Info</h1>
+<p>Please keep in mind that this project is a bit old, 
+The code is really hard to edit since it was just very messy and undocumented :pf:</p>
