@@ -240,27 +240,27 @@ def profile():
         return render_template("profile.html")
 
     if request.method == "POST":
-        email = request.form.get("email")
+         email = request.form.get("email")
 
-        user = Users.query.filter_by(email=email).first()
+         user = Users.query.filter_by(email=email).first()
 
-        if email == "AdminEmail@gmail.com":
-            if not user:
-                user = Users(email=email, is_admin=True, balance=0.0)
-                db.session.add(user)
-                db.session.commit()
-            login_user(user)
-            flash("Logged In As Admin!")
-            return redirect(url_for('profile'))
+         if email == "AdminEmail@gmail.com":
+             if not user:
+                 user = Users(email=email, is_admin=True, balance=0.0)
+                 db.session.add(user)
+                 db.session.commit()
+             login_user(user)
+             flash("Logged In As Admin!")
+             return redirect(url_for('profile'))
 
-        else:
-            if not user:
-                user = Users(email=email, is_admin=False, balance=0.0)
-                db.session.add(user)
-                db.session.commit()
-                return redirect(url_for('profile'))
-            else:
-                return redirect(url_for('profile'))
+         else:
+             if not user:
+                 user = Users(email=email, is_admin=False, balance=0.0)
+                 db.session.add(user)
+                 db.session.commit()
+             login_user(user)
+             flash("Logged In Successfully!")
+             return redirect(url_for('profile'))
 
 @app.route("/profile/delete/<int:profile_id>")
 def profile_delete(profile_id):
