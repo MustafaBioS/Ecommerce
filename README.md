@@ -3,7 +3,7 @@ Ecommerce is an ecommerce shopping website made with flask!
 <h1>Accessing Admin Page</h1>
 > Go to /profile<br>
 > Enter "AdminEmail@gmail.com" as your email<br>
-> You'll see "Admin" in the navbar on top<br>
+> You'll see "(Admin)[https://ecommerce.mustafa.hackclub.app/admin]" in the navbar on top<br>
 > Add your Shop Items there!!!<br>
 <h1>Charging Balance</h1>
 > Go to /balance<br>
@@ -16,4 +16,6 @@ Ecommerce is an ecommerce shopping website made with flask!
 > Now go to localhost:PORT and you should see the page!
 <h1>Extra IMPORTANT Notes</h1>
 <p>Please keep in mind that this project is a bit old, 
-The code is really hard to edit since it was just very messy and undocumented, you should also login as an Admin and add products by yourself for now as it is a customizable shopping website like Shopify, You will also be unable to charge your balance while not signed up with an email, please keep in mind that this was a very beginner project.</p>
+The code is really hard to edit since it was just very messy and undocumented.</p>
+<h1>ADMIN PANEL</h1>
+<p>you should also log in as an Admin (Following the instructions above) and add products by yourself for now as it is a customizable shopping website like Shopify, You will also be unable to charge your balance while not signed up with an email, please keep in mind that this was a very beginner project.</p>
