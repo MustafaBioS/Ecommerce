@@ -14,6 +14,6 @@ Ecommerce is an ecommerce shopping website made with flask!
 > cd Ecommerce<br>
 > python app.py<br>
 > Now go to localhost:PORT and you should see the page!
-<h1>Extra Info</h1>
+<h1>Extra IMPORTANT Notes</h1>
 <p>Please keep in mind that this project is a bit old, 
-The code is really hard to edit since it was just very messy and undocumented :pf:</p>
+The code is really hard to edit since it was just very messy and undocumented, you should also login as an Admin and add products by yourself for now as it is a customizable shopping website like Shopify, You will also be unable to charge your balance while not signed up with an email, please keep in mind that this was a very beginner project.</p>
