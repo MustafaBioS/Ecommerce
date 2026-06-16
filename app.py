@@ -251,7 +251,7 @@ def profile():
                  db.session.commit()
              login_user(user)
              flash("Logged In As Admin!")
-             return redirect(url_for('profile'))
+             return redirect(url_for('all'))
 
          else:
              if not user:
@@ -419,8 +419,15 @@ def balance():
         code = request.form.get("code")
 
         if code == "123":
-            current_user.balance += 1000
-            db.session.commit()
+            if current_user.is_authenticated:
+                current_user.balance += 1000
+                db.session.commit()
+            else:
+                flash("Not Authenticated")
+
+            return redirect(url_for('balance'))
+        else:
+            flash("Invalid code!")
             return redirect(url_for('balance'))
 
 # Run
