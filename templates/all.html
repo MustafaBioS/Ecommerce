@@ -127,9 +127,12 @@
 
         const balance = document.querySelector('.balance');
 
-        balance.addEventListener('click', () => {
-            window.location.href = "{{ url_for('balance') }}";
-        })
+        if (balance) {
+            balance.addEventListener('click', () => {
+                window.location.href = "{{ url_for('balance') }}";
+            })
+        }
+
 
         if (admin && adminnm) {
             admin.addEventListener('click', ()=> {

@@ -129,9 +129,12 @@
 
         const balance = document.querySelector('.balance');
 
-        balance.addEventListener('click', () => {
-            window.location.href = "{{ url_for('balance') }}";
-        })
+        if (balance) {
+            balance.addEventListener('click', () => {
+                window.location.href = "{{ url_for('balance') }}";
+            })
+        }
+
 
         if (checkout) {
             checkout.addEventListener('click', ()=> {
