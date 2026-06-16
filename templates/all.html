@@ -22,7 +22,9 @@
         </div>
 
         <div class="right">
-            <h1 class="txt balance">${{ current_user.balance }}</h1>
+            {% if current_user.is_authenticated %}
+                <h1 class="txt balance">${{ current_user.balance }}</h1>
+            {% endif %}
             <img src="{{ url_for('static', filename='user.png')}}" class="prof icon">
             <img src="{{ url_for('static', filename='cart.png')}}" class="cart icon">
             <img src="{{ url_for('static', filename='menu.png')}}" class="menu icon">
