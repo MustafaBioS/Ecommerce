@@ -150,9 +150,12 @@
 
         const balance = document.querySelector('.balance');
 
-        balance.addEventListener('click', () => {
-            window.location.href = "{{ url_for('balance') }}";
-        })
+        if (balance) {
+            balance.addEventListener('click', () => {
+                window.location.href = "{{ url_for('balance') }}";
+            })
+        }
+
 
         document.querySelectorAll('.adt').forEach(button => {
             button.addEventListener('click', async (e) => {

@@ -56,9 +56,12 @@
         const balance = document.querySelector('.balance');
         const cart = document.querySelector('.cart');
 
-        balance.addEventListener('click', () => {
-            window.location.href = "{{ url_for('balance') }}";
-        })
+        if (balance) {
+            balance.addEventListener('click', () => {
+                window.location.href = "{{ url_for('balance') }}";
+            })
+        }
+
 
         cart.addEventListener('click', ()=> {
             window.location.href = "{{ url_for('cart')}}";
